@@ -3,7 +3,7 @@ version: '3.2'
 services:
 
   db:
-    image: viderum/ckan-cloud-docker:db-latest
+    image: datacity/db
     build:
       context: db
     restart: always
@@ -29,7 +29,7 @@ services:
     - ckan-multi
 
   datastore-db:
-    image: viderum/ckan-cloud-docker:db-latest
+    image: datacity/db
     restart: always
     expose:
     - "5432"

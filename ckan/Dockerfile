@@ -75,6 +75,9 @@ RUN ckan-pip install --index-url ${PIP_INDEX_URL:-https://pypi.org/simple/} -r /
 
 COPY post_install_functions.sh /post_install_functions.sh
 
+RUN ckan-pip install --upgrade setuptools==44.1.0 boto3==1.13.16 ckantoolkit==0.0.4 &&\
+    ckan-pip install -e git+https://github.com/KaplanOpenSource/ckanext-s3filestore.git@aws-minimal-perms-and-null-content-type-fix#egg=ckanext-s3filestore
+
 ARG POST_INSTALL
 RUN . /post_install_functions.sh && eval "${POST_INSTALL}"
 

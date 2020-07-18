@@ -15,6 +15,11 @@ jobs:
         docker push datacity/ckan:${GITHUB_SHA} &&\
         docker build -t datacity/cca-operator:${GITHUB_SHA} cca-operator &&\
         docker push datacity/cca-operator:${GITHUB_SHA} &&\
-        echo Built Images: &&\
-        echo datacity/ckan:${GITHUB_SHA} &&\
-        echo datacity/cca-operator:${GITHUB_SHA}
+        if [ "${GITHUB_REF}" == "refs/heads/master" ]; then
+          docker tag datacity/ckan:${GITHUB_SHA} datacity/ckan:latest &&\
+          docker push datacity/ckan:latest &&\
+          docker tag datacity/cca-operator:${GITHUB_SHA} datacity/cca-operator:latest &&\
+          docker push datacity/cca-operator:latest
+        fi &&\
+        echo datacity/cca-operator:${GITHUB_SHA} &&\
+        echo datacity/ckan:${GITHUB_SHA}

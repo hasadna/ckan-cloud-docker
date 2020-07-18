@@ -1,5 +1,7 @@
-gunicorn
-ckanext-xloader
-messytables
-pdftables
-Unidecode
+gunicorn==19.10.0
+ckanext-xloader==0.6.1
+messytables==0.15.2
+pdftables==0.0.4
+Unidecode==1.1.1
+ckanext-geoview==0.0.16
+ckantoolkit==0.0.4

@@ -77,11 +77,11 @@ ckan.redis.url = {{CKAN_REDIS_URL}}
 
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = stats text_view image_view recline_view datastore xloader
+ckan.plugins = stats text_view image_view recline_view datastore xloader resource_proxy s3filestore geojson_view
 
 # Define which views should be created by default
 # (plugins must be loaded in ckan.plugins)
-ckan.views.default_views = image_view text_view recline_view
+ckan.views.default_views = image_view text_view recline_view geojson_view
 
 # Customize which text formats the text_view plugin will show
 #ckan.preview.json_formats = json
@@ -97,9 +97,9 @@ ckan.views.default_views = image_view text_view recline_view
 #ckan.base_public_folder = public-bs2
 #ckan.base_templates_folder = templates-bs2
 
-ckan.site_title = Datagov CKAN Demo
+ckan.site_title = Datacity CKAN Demo
 ckan.site_logo = /base/images/ckan-logo.png
-ckan.site_description = Local development environment
+ckan.site_description = Datacity local development environment
 ckan.favicon = /base/images/ckan.ico
 ckan.gravatar_default = identicon
 ckan.preview.direct = png jpg gif
@@ -116,10 +116,10 @@ ckan.display_timezone = Etc/UTC
 
 
 ## Internationalisation Settings
-#    ckan.locale_default = {{ .Values.localeDefault }}
-#    ckan.locale_order = {{ .Values.localeOrder }}
-#    ckan.locales_offered = {{ .Values.localesOffered }}
-#    ckan.locales_filtered_out = {{ .Values.localesFilteredOut }}
+ckan.locale_default = he
+ckan.locale_order = en pt_BR ja it cs_CZ ca es fr el sv sr sr@latin no sk fi ru de pl nl bg ko_KR hu sa sl lv
+ckan.locales_offered = he ar en
+ckan.locales_filtered_out = en_GB
 
 ## Feeds Settings
 
@@ -162,6 +162,17 @@ smtp.starttls = {{SMTP_STARTTLS}}
 smtp.user = {{SMTP_USER}}
 smtp.password = {{SMTP_PASSWORD}}
 smtp.mail_from = {{SMTP_MAIL_FROM}}
+
+## S3Filestore settings
+
+ckanext.s3filestore.host_name = {{S3_FILESTORE_AWS_HOST_NAME}}
+ckanext.s3filestore.aws_access_key_id = {{S3_FILESTORE_AWS_ACCESS_KEY_ID}}
+ckanext.s3filestore.aws_secret_access_key = {{S3_FILESTORE_AWS_SECRET_ACCESS_KEY}}
+ckanext.s3filestore.aws_bucket_name = {{S3_FILESTORE_AWS_BUCKET_NAME}}
+ckanext.s3filestore.region_name = {{S3_FILESTORE_AWS_REGION_NAME}}
+ckanext.s3filestore.signature_version = s3v4
+ckanext.s3filestore.check_access_on_startup = false
+ckanext.s3filestore.create_if_not_exists = false
 
 ## Logging configuration
 [loggers]

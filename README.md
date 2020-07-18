@@ -1,8 +1,6 @@
-# CKAN Cloud Docker
+# Hasadna Datacity CKAN Cloud Docker
 
-[![Build Status](https://travis-ci.org/ViderumGlobal/ckan-cloud-docker.svg?branch=master)](https://travis-ci.org/ViderumGlobal/ckan-cloud-docker)
-
-Contains Docker imgages for the different components of CKAN Cloud and a Docker compose environment for development and testing.
+Contains Docker imgages for the different components of Hasadna's Datacity CKAN Cloud and a Docker compose environment for development and testing.
 
 Available components:
 
@@ -15,6 +13,57 @@ Available components:
 * **provisioning-api**: [ckan-cloud-provisioning-api](https://github.com/ViderumGlobal/ckan-cloud-provisioning-api)
 * **traefik**: Reverse proxy, SSL handler and load balancer
 
+
+## Local Development of Datacity CKAN image
+
+Create secrets - accept all defaults
+
+`./create_secrets.py`
+
+Add the following S3 secrets to `docker-compose/ckan-secrets.sh`:
+
+```
+export S3_FILESTORE_AWS_HOST_NAME=https://storage.googleapis.com
+export S3_FILESTORE_AWS_ACCESS_KEY_ID=
+export S3_FILESTORE_AWS_SECRET_ACCESS_KEY=
+export S3_FILESTORE_AWS_BUCKET_NAME=
+export S3_FILESTORE_AWS_REGION_NAME=europe-west1
+```
+
+Build the images
+
+`docker-compose -f docker-compose.yaml -f .docker-compose-db.yaml build`
+
+Start the environment
+
+`docker-compose -f docker-compose.yaml -f .docker-compose-db.yaml up -d --force-recreate nginx`
+
+Add a hosts entry mapping domain `nginx` to `127.0.0.1`:
+
+```
+127.0.0.1 nginx
+```
+
+Wait a few seconds until CKAN api responds successfully:
+
+```
+curl http://nginx:8080/api/3
+```
+
+Create a CKAN admin user
+
+```
+docker-compose exec ckan ckan-paster --plugin=ckan \
+    sysadmin add -c /etc/ckan/production.ini admin password=12345678 email=admin@localhost
+```
+
+Login to CKAN at http://nginx:8080 with username `admin` and password `12345678`
+
+### Making modifications
+
+* Install plugins in `ckan/Dockerfile` / `ckan/requirements.txt`
+* Test changes to CKAN config by making changes to ckan-conf-templates/production.ini.template
+  * To persist the changes to the final deployment, you will need to implement them in hasadna/ckan-cloud-helm
 
 ## Install
 
