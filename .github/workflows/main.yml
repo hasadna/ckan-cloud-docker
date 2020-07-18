@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - env:
+        DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
+        DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      run: |
+        echo "${DOCKER_HUB_PASSWORD}" | docker login -u "${DOCKER_HUB_USER}" --password-stdin &&\
+        docker build -t datacity/ckan:${GITHUB_SHA} ckan &&\
+        docker push datacity/ckan:${GITHUB_SHA} &&\
+        docker build -t datacity/cca-operator:${GITHUB_SHA} cca-operator &&\
+        docker push datacity/cca-operator:${GITHUB_SHA} &&\
+        echo Built Images: &&\
+        echo datacity/ckan:${GITHUB_SHA} &&\
+        echo datacity/cca-operator:${GITHUB_SHA}
