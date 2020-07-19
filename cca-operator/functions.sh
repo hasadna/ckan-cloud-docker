@@ -267,6 +267,8 @@ create_datastore_db() {
         REVOKE CONNECT ON DATABASE \"${SITE_USER}\" FROM \"${DS_RO_USER}\";
         GRANT CONNECT ON DATABASE \"${DS_RW_USER}\" TO \"${DS_RO_USER}\";
         GRANT USAGE ON SCHEMA public TO \"${DS_RO_USER}\";
+        GRANT \"${SITE_USER}\" TO \"${POSTGRES_USER}\";
+        GRANT \"${DS_RW_USER}\" TO \"${POSTGRES_USER}\";
         ALTER DATABASE \"${SITE_USER}\" OWNER TO \"${SITE_USER}\";
         ALTER DATABASE \"${DS_RW_USER}\" OWNER TO \"${DS_RW_USER}\";
     " &&\
