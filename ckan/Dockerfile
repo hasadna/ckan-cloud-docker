@@ -96,6 +96,13 @@ USER root
 ARG EXTRA_FILESYSTEM
 COPY ${EXTRA_FILESYSTEM} /
 
+COPY i18n/ar.mo /usr/lib/ckan/venv/src/ckan/ckan/i18n/ar/LC_MESSAGES/ckan.mo
+COPY i18n/ar.po /usr/lib/ckan/venv/src/ckan/ckan/i18n/ar/LC_MESSAGES/ckan.po
+COPY i18n/he.mo /usr/lib/ckan/venv/src/ckan/ckan/i18n/he/LC_MESSAGES/ckan.mo
+COPY i18n/he.po /usr/lib/ckan/venv/src/ckan/ckan/i18n/he/LC_MESSAGES/ckan.po
+COPY i18n/en_US.mo /usr/lib/ckan/venv/src/ckan/ckan/i18n/en_US/LC_MESSAGES/ckan.mo
+COPY i18n/en_US.po /usr/lib/ckan/venv/src/ckan/ckan/i18n/en_US/LC_MESSAGES/ckan.po
+
 # Initialization that should be done as root
 ARG ROOT_INIT
 RUN eval "${ROOT_INIT}"

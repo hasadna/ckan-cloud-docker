@@ -14,9 +14,13 @@ Available components:
 * **traefik**: Reverse proxy, SSL handler and load balancer
 
 
-## Local Development of Datacity CKAN image
+## Local Development of Datacity CKAN
 
-Create secrets - accept all defaults
+### Get the secrets
+
+Ask another team member for `docker-compose/ckan-secrets.sh` file for the testing instance
+
+Alternatively, create secrets - accept all defaults
 
 `./create_secrets.py`
 
@@ -30,13 +34,34 @@ export S3_FILESTORE_AWS_BUCKET_NAME=
 export S3_FILESTORE_AWS_REGION_NAME=europe-west1
 ```
 
-Build the images
+### Get the latest translations
 
-`docker-compose -f docker-compose.yaml -f .docker-compose-db.yaml build`
+Get a Transifex API token
 
-Start the environment
+```
+TRANSIFEX_API_TOKEN=
+```
 
-`docker-compose -f docker-compose.yaml -f .docker-compose-db.yaml up -d --force-recreate nginx`
+Download and compile the translations
+
+```
+for LANG in he ar en_US; do
+    echo downloading $LANG &&\
+    curl -sL --user api:$TRANSIFEX_API_TOKEN -X GET "https://www.transifex.com/api/2/project/datacity-ckan/resource/ckanpot/translation/he/?mode=reviewed&file" > ckan/i18n/$LANG.po &&\
+    echo compiling $LANG &&\
+    msgfmt -o ckan/i18n/$LANG.mo ckan/i18n/$LANG.po &&\
+    echo OK
+done
+```
+
+### Start a full environment
+
+Build the images and start the environment
+
+```
+docker-compose -f docker-compose.yaml -f .docker-compose-db.yaml build &&\
+docker-compose -f docker-compose.yaml -f .docker-compose-db.yaml up -d --force-recreate nginx
+```
 
 Add a hosts entry mapping domain `nginx` to `127.0.0.1`:
 
@@ -64,6 +89,108 @@ Login to CKAN at http://nginx:8080 with username `admin` and password `12345678`
 * Install plugins in `ckan/Dockerfile` / `ckan/requirements.txt`
 * Test changes to CKAN config by making changes to ckan-conf-templates/production.ini.template
   * To persist the changes to the final deployment, you will need to implement them in hasadna/ckan-cloud-helm
+
+### Updating translations
+
+Set the ckan-cloud-docker directory in env var
+
+```
+CKAN_CLOUD_DOCKER_DIR=`pwd`
+```
+
+Change to a new temporary directory
+
+```
+TEMPDIR=`mktemp -d`
+cd $TEMPDIR
+```
+
+Download the relevant CKAN version
+
+```
+curl -LO https://github.com/hasadna/ckan/archive/master.zip &&\
+unzip master.zip && rm master.zip
+```
+
+Initialize a Python virtualenv
+
+```
+virtualenv -p python2 venv &&\
+. venv/bin/activate &&\
+cd ckan-master
+pip install -r ckan-master/requirement-setuptools.txt &&\
+pip install -r requirements.txt &&\
+pip install --upgrade Babel transifex-client
+```
+
+Update .pot file
+
+```
+python setup.py extract_messages
+```
+
+Set the transifex config
+
+```
+echo "[main]
+host = https://www.transifex.com
+
+[datacity-ckan.ckanpot]
+file_filter = ckan/i18n/<lang>/LC_MESSAGES/ckan.po
+source_file = ckan/i18n/ckan.pot
+source_lang = en
+type = PO
+" > .tx/config
+```
+
+Get a Transifex API token
+
+```
+TRANSIFEX_API_TOKEN=
+```
+
+Set transifex auth file
+
+```
+echo "[https://www.transifex.com]
+api_hostname = https://api.transifex.com
+hostname = https://www.transifex.com
+password = $TRANSIFEX_API_TOKEN
+username = api
+" > ~/.transifexrc
+```
+
+Push the updated .pot file
+
+```
+tx push -s
+```
+
+On initial setup - from Transifex UI, copy each language's .po files as well to have initial translations
+
+Pull updated translations
+
+```
+tx pull -lhe,ar,en_US
+```
+
+Compile and copy the updated translations to ckan-cloud-docker
+
+```
+for LANG in ar he en_US; do
+    msgfmt -o ckan/i18n/$LANG/LC_MESSAGES/ckan.mo ckan/i18n/$LANG/LC_MESSAGES/ckan.po &&\
+    cp ckan/i18n/$LANG/LC_MESSAGES/ckan.mo $CKAN_CLOUD_DOCKER_DIR/ckan/i18n/$LANG.mo &&\
+    cp ckan/i18n/$LANG/LC_MESSAGES/ckan.po $CKAN_CLOUD_DOCKER_DIR/ckan/i18n/$LANG.po
+done
+```
+
+delete the temp directory
+
+```
+cd $CKAN_CLOUD_DOCKER_DIR &&\
+rm -rf $TEMPDIR
+```
+
 
 ## Install
 
