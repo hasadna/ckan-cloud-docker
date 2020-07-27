@@ -11,6 +11,7 @@ jobs:
         DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         TRANSIFEX_API_TOKEN: ${{ secrets.TRANSIFEX_API_TOKEN }}
       run: |
+        sudo apt-get install -y gettext &&\
         echo pulling translations from Transifex &&\
         for LANG in he ar en_US; do
             echo $LANG &&\
