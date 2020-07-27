@@ -47,7 +47,7 @@ Download and compile the translations
 ```
 for LANG in he ar en_US; do
     echo downloading $LANG &&\
-    curl -sL --user api:$TRANSIFEX_API_TOKEN -X GET "https://www.transifex.com/api/2/project/datacity-ckan/resource/ckanpot/translation/he/?mode=reviewed&file" > ckan/i18n/$LANG.po &&\
+    curl -sL --user api:$TRANSIFEX_API_TOKEN -X GET "https://www.transifex.com/api/2/project/datacity-ckan/resource/ckanpot/translation/$LANG/?mode=default&file" > ckan/i18n/$LANG.po &&\
     echo compiling $LANG &&\
     msgfmt -o ckan/i18n/$LANG.mo ckan/i18n/$LANG.po &&\
     echo OK

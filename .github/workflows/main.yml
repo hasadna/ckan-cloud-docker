@@ -15,7 +15,7 @@ jobs:
         echo pulling translations from Transifex &&\
         for LANG in he ar en_US; do
             echo $LANG &&\
-            curl -sL --user api:$TRANSIFEX_API_TOKEN -X GET "https://www.transifex.com/api/2/project/datacity-ckan/resource/ckanpot/translation/he/?mode=reviewed&file" > ckan/i18n/$LANG.po &&\
+            curl -sL --user api:$TRANSIFEX_API_TOKEN -X GET "https://www.transifex.com/api/2/project/datacity-ckan/resource/ckanpot/translation/$LANG/?mode=default&file" > ckan/i18n/$LANG.po &&\
             msgfmt -o ckan/i18n/$LANG.mo ckan/i18n/$LANG.po
         done &&\
         echo "${DOCKER_HUB_PASSWORD}" | docker login -u "${DOCKER_HUB_USER}" --password-stdin &&\
