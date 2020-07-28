@@ -20,9 +20,11 @@ jobs:
             msgfmt -o ckan/i18n/$LANG.mo ckan/i18n/$LANG.po
         done &&\
         echo "${DOCKER_HUB_PASSWORD}" | docker login -u "${DOCKER_HUB_USER}" --password-stdin &&\
-        docker build -t datacity/ckan:${GITHUB_SHA} ckan &&\
+        docker pull datacity/ckan:latest &&\
+        docker pull datacity/cca-operator:latest &&\
+        docker build --cache-from datacity/ckan:latest -t datacity/ckan:${GITHUB_SHA} ckan &&\
         docker push datacity/ckan:${GITHUB_SHA} &&\
-        docker build -t datacity/cca-operator:${GITHUB_SHA} cca-operator &&\
+        docker build --cache-from datacity/cca-operator:latest -t datacity/cca-operator:${GITHUB_SHA} cca-operator &&\
         docker push datacity/cca-operator:${GITHUB_SHA} &&\
         if [ "${GITHUB_REF}" == "refs/heads/master" ]; then
           docker tag datacity/ckan:${GITHUB_SHA} datacity/ckan:latest &&\
