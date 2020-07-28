@@ -5,3 +5,11 @@ pdftables==0.0.4
 Unidecode==1.1.1
 ckanext-geoview==0.0.16
 ckantoolkit==0.0.4
+
+-e "git+https://github.com/ckan/ckanext-scheming.git@4e09fcfbb0864c52034c4b91171ab44429d27768#egg=ckanext-scheming"
+# ckanext-scheming/requirements.txt
+pytz==2016.7
+six==1.11.0
+ckanapi==4.3
+
+-r requirements-ckanext-datacity.txt

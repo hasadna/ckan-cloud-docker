@@ -10,6 +10,7 @@ jobs:
         DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
         DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         TRANSIFEX_API_TOKEN: ${{ secrets.TRANSIFEX_API_TOKEN }}
+        DATACITY_K8S_DEPLOY_KEY: ${{ secrets.DATACITY_K8S_DEPLOY_KEY }}
       run: |
         sudo apt-get install -y gettext &&\
         echo pulling translations from Transifex &&\
@@ -27,7 +28,20 @@ jobs:
           docker tag datacity/ckan:${GITHUB_SHA} datacity/ckan:latest &&\
           docker push datacity/ckan:latest &&\
           docker tag datacity/cca-operator:${GITHUB_SHA} datacity/cca-operator:latest &&\
-          docker push datacity/cca-operator:latest
+          docker push datacity/cca-operator:latest &&\
+          if ! git log -1 --pretty=format:"%s" | grep -- --no-deploy; then
+            cd `mktemp -d` &&\
+            echo "${DATACITY_K8S_DEPLOY_KEY}" > deploy_key &&\
+            chmod 400 deploy_key &&\
+            export GIT_SSH_COMMAND="ssh -i `pwd`/deploy_key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" &&\
+            git clone git@github.com:hasadna/datacity-k8s.git &&\
+            cd datacity-k8s &&\
+            echo "${GITHUB_SHA}" > instances/ckan-cloud-docker-latest-tag.txt &&\
+            git config --global user.name "ckan-cloud-docker CI" &&\
+            git config --global user.email "ckan-cloud-docker-ci@localhost" &&\
+            git add instances/ckan-cloud-docker-latest-tag.txt && git commit -m "automatic update of ckan-cloud-docker" &&\
+            git push origin master
+          fi
         fi &&\
         echo datacity/cca-operator:${GITHUB_SHA} &&\
         echo datacity/ckan:${GITHUB_SHA}

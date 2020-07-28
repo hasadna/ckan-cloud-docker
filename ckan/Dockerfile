@@ -69,7 +69,7 @@ RUN touch $CKAN_VENV/src/ckan/requirements.txt && ckan-pip install --index-url $
 
 RUN ckan-pip install --index-url ${PIP_INDEX_URL:-https://pypi.org/simple/} -e $CKAN_VENV/src/ckan/
 
-COPY requirements.txt /tmp/
+COPY requirements.txt requirements-ckanext-datacity.txt /tmp/
 RUN ckan-pip install --index-url ${PIP_INDEX_URL:-https://pypi.org/simple/} -r /tmp/requirements.txt &&\
     ckan-pip install --index-url ${PIP_INDEX_URL:-https://pypi.org/simple/} -U requests[security]
 
