@@ -91,12 +91,7 @@ export CKAN_DATASTORE_WRITE_URL=postgresql://${DATASTORE_POSTGRES_USER}:${DATAST
 export CKAN_DATASTORE_READ_URL=postgresql://${DATASTORE_RO_USER}:${DATASTORE_RO_PASSWORD}@${POSTGRES_HOST:-datastore-db}/${DATASTORE_POSTGRES_USER:-datastore}
 export SOLR_URL=${SOLR_URL}
 export CKAN_REDIS_URL=redis://redis:6379/1
-export CKAN_DATAPUSHER_URL=
-export SMTP_SERVER=
-export SMTP_STARTTLS=
-export SMTP_USER=
-export SMTP_PASSWORD=
-export SMTP_MAIL_FROM=" > $TEMPFILE
+export CKAN_DATAPUSHER_URL=" > $TEMPFILE
         cat $TEMPFILE
 
         kubectl $KUBECTL_GLOBAL_ARGS create secret generic "${CKAN_SECRETS_SECRET}" --from-file=secrets.sh=$TEMPFILE
