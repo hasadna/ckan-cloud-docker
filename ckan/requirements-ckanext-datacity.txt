@@ -1,1 +1,1 @@
--e "git+https://github.com/hasadna/ckanext-datacity.git@5592828356f3e3d53eebcaf44b671da2e4fe421e#egg=ckanext-datacity"
+-e "git+https://github.com/hasadna/ckanext-datacity.git@38ac76f1d719fff12343b59e65949a499508676e#egg=ckanext-datacity"
