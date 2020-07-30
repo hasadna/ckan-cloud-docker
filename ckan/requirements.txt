@@ -13,3 +13,5 @@ six==1.11.0
 ckanapi==4.3
 
 -r requirements-ckanext-datacity.txt
+
+-e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages'
