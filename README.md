@@ -338,3 +338,4 @@ You might need to reload the solr collection after recreate:
 ```
 curl "http://localhost:8983/solr/admin/collections?action=RELOAD&name=${INSTANCE_ID}&wt=json"
 ```
+
