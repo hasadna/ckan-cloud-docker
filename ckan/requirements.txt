@@ -1,17 +1,18 @@
 gunicorn==19.10.0
--e "git+https://github.com/OriHoch/ckanext-xloader.git@0af4399220f284f4ff6a2ddcbb3b2deda4247226#egg=ckanext-xloader"
+-e "git+https://github.com/OriHoch/ckanext-xloader.git@add-support-for-unicode-headers-and-fix-messytables-fallback#egg=ckanext-xloader"
 messytables==0.15.2
 pdftables==0.0.4
 Unidecode==1.1.1
 ckanext-geoview==0.0.16
 ckantoolkit==0.0.4
+future==0.18.2
 
 -e "git+https://github.com/ckan/ckanext-scheming.git@4e09fcfbb0864c52034c4b91171ab44429d27768#egg=ckanext-scheming"
 # ckanext-scheming/requirements.txt
 pytz==2016.7
-six==1.11.0
+six==1.15.0
 ckanapi==4.3
 
 -r requirements-ckanext-datacity.txt
 
--e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages'
+-e 'git+https://github.com/ckan/ckanext-pages.git@8fdba7fed09e1efde58ac05b4eec045a990ff6e8#egg=ckanext-pages'
