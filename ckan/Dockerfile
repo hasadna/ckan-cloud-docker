@@ -50,7 +50,7 @@ RUN mkdir -p $CKAN_VENV $CKAN_CONFIG $CKAN_STORAGE_PATH $CKAN_LOGS_PATH && \
     ln -s $CKAN_VENV/bin/paster /usr/local/bin/ckan-paster
 
 # Setup CKAN
-RUN ckan-pip install --index-url ${PIP_INDEX_URL:-https://pypi.org/simple/} -U pip &&\
+RUN ckan-pip install --index-url ${PIP_INDEX_URL:-https://pypi.org/simple/} -U 'pip<21' &&\
     chown -R ckan:ckan $CKAN_HOME $CKAN_VENV $CKAN_CONFIG $CKAN_STORAGE_PATH $CKAN_LOGS_PATH
 
 USER ckan
