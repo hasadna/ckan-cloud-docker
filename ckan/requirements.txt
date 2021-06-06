@@ -1,5 +1,6 @@
 gunicorn==19.10.0
 -e "git+https://github.com/OriHoch/ckanext-xloader.git@add-support-for-unicode-headers-and-fix-messytables-fallback#egg=ckanext-xloader"
+xlrd==1.2.0
 messytables==0.15.2
 pdftables==0.0.4
 Unidecode==1.1.1
