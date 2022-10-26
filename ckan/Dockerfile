@@ -58,6 +58,7 @@ ARG CKAN_BRANCH
 ARG CKAN_REPO
 
 RUN CKAN_BRANCH="${CKAN_BRANCH:-master}" && CKAN_REPO="${CKAN_REPO:-hasadna/ckan}" &&\
+    echo "https://github.com/hasadna/ckan/commit/adc2ae243ea7456d69a881129c5762b012f58536" &&\
     mkdir -p $CKAN_VENV/src &&\
     wget --no-verbose -O $CKAN_VENV/src/${CKAN_BRANCH}.tar.gz https://github.com/${CKAN_REPO}/archive/${CKAN_BRANCH}.tar.gz &&\
     cd $CKAN_VENV/src && tar -xzf ${CKAN_BRANCH}.tar.gz && mv ckan-${CKAN_BRANCH} ckan &&\
