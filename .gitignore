@@ -111,3 +111,5 @@ traefik/certs
 
 # local test yamls
 .local-test-*.yaml
+
+/tx
